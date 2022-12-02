@@ -1,11 +1,27 @@
 
 const apiPoke ={}
 
+function convertPokeApiDetailToModel(pokeDetail){
+  const pokemon= new Pokemon()
+  pokemon.number= pokeDetail.order
+  pokemon.name= pokeDetail.name
+
+  const types= pokeDetail.types.map((typeSlot)=> typeSlot.type.name)
+  const [type] = types
+
+  pokemon.types = types
+  pokemon.type = type
+  pokemon.photo = pokeDetail.sprites.other.dream_world.front_default
+
+  return pokemon
+}
 
 apiPoke.getPokemonDetail=(pokemon)=>{
   return fetch(pokemon.url)
   .then((response=> response.json()))
-}// um novo fetch para url do pokemon e convertando para um json
+  .then(convertPokeApiDetailToModel)
+  }
+  // um novo fetch para url do pokemon e convertando para um json
 
 
 apiPoke.getPokemons = (offset=0, limit = 5)=> {
